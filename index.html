@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MX69 — Black Market System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ================= LANDING ================= -->
+  <div id="view-landing">
+    <div class="topbar">
+      <div class="brand">
+        <img src="image/MX69.png" alt="MX69 Logo">
+        <span>MX<span><b>69</b></span></span>
+      </div>
+      <a class="backlink" href="#">Black Market</a>
+    </div>
+
+    <div class="hero">
+      <img class="hero-logo" src="image/MX69.png" alt="MX69 logo">
+      <h1>MX<span>69</span> BLACK MARKET</h1>
+      <p>SISTEM PENCATATAN TRANSAKSI BAWAH TANAH — UANG HITAM · SENJATA · PELURU</p>
+      <div class="role-grid">
+        <div class="role-card">
+          <div class="tag">Akses Terbatas</div>
+          <h3>Masuk sebagai User</h3>
+          <p>Isi data transaksi kamu: jumlah uang hitam, foto bukti, jenis senjata, peluru, dan vest. Data langsung masuk ke database admin.</p>
+          <button onclick="goTo('user')">MASUK SEBAGAI USER</button>
+        </div>
+        <div class="role-card admin">
+          <div class="tag">Owner Only</div>
+          <h3>Masuk sebagai Admin</h3>
+          <p>Akses penuh ke seluruh data transaksi layaknya spreadsheet: lihat, tambah, ubah, dan hapus data (CRUD).</p>
+          <button onclick="goTo('admin-gate')">MASUK SEBAGAI ADMIN</button>
+        </div>
+      </div>
+      <div class="foot-note">Semua data disimpan otomatis dan real-time. Hanya admin yang memiliki panel untuk melihat seluruh isi database.</div>
+    </div>
+  </div>
+
+  <!-- ================= USER FORM ================= -->
+  <div id="view-user" class="hidden">
+    <div class="topbar">
+      <a class="backlink" href="#" onclick="goTo('landing'); return false;">← Kembali</a>
+    </div>
+    <div class="page">
+      <div class="card">
+        <h2>Form Transaksi</h2>
+        <div class="sub">Isi data di bawah ini dengan lengkap dan benar sebelum dikirim.</div>
+
+        <div class="card price-card">
+          <h3 style="font-family:'Teko'; font-size:14px; margin-bottom:10px; color:var(--gold-bright);">DAFTAR HARGA</h3>
+          <div id="price-list-display"></div>
+          <div class="price-note">Harga sudah termasuk Potongan Cuci + Untuk Kantor</div>
+        </div>
+
+        <div class="field">
+          <label>Jumlah Uang Hitam (Rp)</label>
+          <input type="number" id="u-uang" placeholder="Contoh: 25000000" min="0">
+        </div>
+
+        <div class="field">
+          <label>Foto Bukti</label>
+          <div class="dropzone" id="u-dropzone" onclick="document.getElementById('u-foto').click()">
+            <input type="file" id="u-foto" accept="image/*" title="Upload foto bukti">
+            <div id="u-dz-content"><div class="dz-label"><b>Klik untuk upload</b> atau seret foto ke sini<br>JPG / PNG, otomatis dikompres</div></div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label>Jenis Senjata</label>
+            <select id="u-senjata-select" onchange="toggleCustom('u-senjata')" title="Pilih jenis senjata">
+              <option value="">Pilih senjata…</option>
+              <option>Mini Revolver</option>
+              <option>Glock18</option>
+              <option>Mac11</option>
+              <option>PumpShotgun</option>
+              <option>3D Printer Bundling</option>
+              <option>Weapon Only (Class 3)</option>
+              <option value="Lainnya">Lainnya (tulis manual)</option>
+            </select>
+            <input type="text" id="u-senjata-custom" class="hidden" placeholder="Tulis jenis senjata" style="margin-top:8px;">
+          </div>
+          <div class="field">
+            <label>Jenis Peluru</label>
+            <select id="u-peluru-select" onchange="toggleCustom('u-peluru')" title="Pilih jenis peluru">
+              <option value="">Pilih peluru…</option>
+              <option>5.5x46</option>
+              <option>.38lc</option>
+              <option>12 Gauge</option>
+              <option>9mm</option>
+              <option>.45 ACP</option>
+              <option value="Lainnya">Lainnya (tulis manual)</option>
+            </select>
+            <input type="text" id="u-peluru-custom" class="hidden" placeholder="Tulis jenis peluru" style="margin-top:8px;">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Jenis Vest</label>
+          <select id="u-vest-select" onchange="toggleCustom('u-vest')" title="Pilih jenis vest">
+            <option value="">Pilih vest…</option>
+            <option>Vest roxwood</option>
+            <option>Vest</option>
+            <option value="Lainnya">Lainnya (tulis manual)</option>
+          </select>
+          <input type="text" id="u-vest-custom" class="hidden" placeholder="Tulis jenis vest" style="margin-top:8px;">
+        </div>
+
+        <div class="field">
+          <label>Catatan (opsional)</label>
+          <textarea id="u-catatan" placeholder="Catatan tambahan…"></textarea>
+        </div>
+
+        <button type="button" class="btn-primary" id="u-submit" onclick="submitTransaction(event)">KIRIM TRANSAKSI</button>
+        <div class="banner" id="u-banner"></div>
+
+        <div class="data-notice">
+          Data yang kamu kirim (termasuk foto) tersimpan di penyimpanan bersama artifact ini sehingga dapat dilihat oleh admin/owner melalui panel admin. Jangan unggah data sensitif di luar keperluan transaksi ini.
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- ================= ADMIN GATE ================= -->
+<div id="view-admin-gate" class="hidden">
+  <div class="topbar">
+    <a class="backlink" href="#" onclick="goTo('landing'); return false;">← Kembali</a>
+  </div>
+  <div class="gate">
+    <h2>Admin Login</h2>
+    <p class="gate-subtitle">Masukkan kode akses untuk membuka panel admin.</p>
+    
+    <div class="field">
+      <label class="gate-label">KODE AKSES</label>
+      <input type="password" id="admin-pass" placeholder="Kode akses…" onkeydown="if(event.key==='Enter')checkAdminPass()">
+    </div>
+    
+    <button class="btn-gate-primary" onclick="checkAdminPass()">MASUK KE DATABASE</button>
+    <div class="banner" id="gate-banner"></div>
+  </div>
+</div>
+
+  <!-- ================= ADMIN DASHBOARD ================= -->
+  <div id="view-admin" class="hidden">
+    <div class="topbar">
+      <a class="backlink" href="#" onclick="goTo('landing'); return false;">← Kembali</a>
+    </div>
+    <div class="page-wide">
+      <div class="admin-top">
+        <div>
+          <h2 class="display" style="font-size:30px; font-weight:600;">Database Transaksi</h2>
+          <div class="sub">Kelola seluruh data seperti spreadsheet</div>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn-gold" onclick="openPriceManager()">⚙️ Kelola Harga</button>
+          <button class="btn-gold" onclick="openModal()">+ Tambah Data</button>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card purple"><div class="label">Total Transaksi</div><div class="value" id="stat-total">0</div></div>
+        <div class="stat-card gold"><div class="label">Total Uang Hitam</div><div class="value mono" id="stat-uang" style="font-size:22px;">Rp 0</div></div>
+        <div class="stat-card"><div class="label">Menunggu Diproses</div><div class="value" id="stat-pending">0</div></div>
+      </div>
+
+      <div class="toolbar">
+        <input type="text" id="admin-search" placeholder="Cari senjata, peluru, vest, catatan…" oninput="renderTable()">
+        <div class="spacer"></div>
+        <button class="btn-small" onclick="loadData(true)">↻ Refresh</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>No</th><th>Tanggal</th><th>Foto</th><th>Uang Hitam</th><th>Senjata</th><th>Peluru</th><th>Vest</th><th>Catatan</th><th>Status</th><th>Aksi</th></tr>
+          </thead>
+          <tbody id="admin-tbody"><tr class="empty-row"><td colspan="10">Memuat data…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL ADD/EDIT ================= -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <div class="modal-head"><h3 id="modal-title">Tambah Data</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="field"><label>Jumlah Uang Hitam (Rp)</label><input type="number" id="m-uang" min="0" title="Jumlah uang hitam dalam rupiah"></div>
+      <div class="field"><label>Foto Bukti</label><div class="dropzone" id="m-dropzone" onclick="document.getElementById('m-foto').click()"><input type="file" id="m-foto" accept="image/*" title="Upload foto bukti"><div id="m-dz-content"><div class="dz-label"><b>Klik untuk upload</b> foto</div></div></div></div>
+      <div class="row2"><div class="field"><label>Jenis Senjata</label><input type="text" id="m-senjata" placeholder="Pistol, SMG, dsb." title="Jenis senjata"></div><div class="field"><label>Jenis Peluru</label><input type="text" id="m-peluru" placeholder="9mm, .45 ACP, dsb." title="Jenis peluru"></div></div>
+      <div class="field"><label>Jenis Vest</label><input type="text" id="m-vest" placeholder="Vest Roxwood, dsb." title="Jenis vest"></div>
+      <div class="field"><label>Status</label><select id="m-status" title="Pilih status transaksi"><option value="pending">Pending</option><option value="proses">Diproses</option><option value="selesai">Selesai</option><option value="ditolak">Ditolak</option></select></div>
+      <div class="field"><label>Catatan</label><textarea id="m-catatan" title="Catatan tambahan" placeholder="Catatan tambahan…"></textarea></div>
+      <div class="modal-actions"><button type="button" class="btn-ghost modal-btn-cancel" onclick="closeModal()">Batal</button><button type="button" class="btn-primary modal-btn-save" onclick="saveModal()">Simpan</button></div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL PRICE MANAGEMENT ================= -->
+  <div class="modal-overlay" id="price-modal-overlay">
+    <div class="modal">
+      <div class="modal-head"><h3>Kelola Harga Barang</h3><button class="modal-close" onclick="closePriceManager()">✕</button></div>
+      <div id="price-form"></div>
+      <div class="modal-actions"><button class="btn-ghost" onclick="closePriceManager()" style="flex:1;">Batal</button><button class="btn-primary" style="flex:2;" onclick="savePriceChanges()">Simpan Perubahan</button></div>
+    </div>
+  </div>
+
+  <div class="lightbox" id="lightbox" onclick="this.classList.remove('show')"><img id="lightbox-img" src="" alt="Lightbox image"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
