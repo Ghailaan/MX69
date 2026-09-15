@@ -1,0 +1,9 @@
+{
+  "name": "blackmarket-app",
+  "version": "1.0.0",
+  "description": "Black Market System Vercel Node.js",
+  "main": "api/index.js",
+  "dependencies": {
+    "mysql2": "^3.9.0"
+  }
+}
