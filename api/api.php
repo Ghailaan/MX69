@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-require_once "koneksi.php";
+require_once __DIR__ . "/../koneksi.php";
 
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 
