@@ -127,6 +127,23 @@ case 'admin_login':
         $stmt->close();
         break;
 
+    // 3.5. Hapus Barang Jualan (Admin)
+    case 'delete_item':
+        $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+        if ($id > 0) {
+            $stmt = $conn->prepare("DELETE FROM items WHERE id = ?");
+            $stmt->bind_param("i", $id);
+            if ($stmt->execute()) {
+                echo json_encode(["status" => "success", "message" => "Item berhasil dihapus"]);
+            } else {
+                echo json_encode(["status" => "error", "message" => "Gagal menghapus item"]);
+            }
+            $stmt->close();
+        } else {
+            echo json_encode(["status" => "error", "message" => "ID item tidak valid"]);
+        }
+        break;
+
     // 4. Ambil Transaksi
     case 'get_transactions':
         $sql = "SELECT id, nama_pembeli AS nama, created_at AS tanggal, uang_hitam AS uang, foto_bukti AS foto, 

@@ -107,10 +107,41 @@ async function openPriceManager(){
   for(const [category, items] of Object.entries(currentPrices)){
     html += `<h4 style="font-family:'Teko'; font-size:16px; margin-top:14px; margin-bottom:8px; color:var(--purple-bright);">${category}</h4>`;
     items.forEach(item => {
-      html += `<div class="field"><label>${item.name} (Rp)</label><input type="number" value="${item.price}" data-id="${item.id}" class="price-input"></div>`;
+      html += `
+        <div class="field" style="display:flex; align-items:flex-end; gap:8px;">
+          <div style="flex:1;">
+            <label>${item.name} (Rp)</label>
+            <input type="number" value="${item.price}" data-id="${item.id}" class="price-input">
+          </div>
+          <button type="button" class="btn-danger" style="height:42px; padding:0 12px; display:flex; align-items:center; justify-content:center;" onclick="deleteItem(${item.id}, '${escapeHtml(item.name)}')">
+            🗑️ Hapus
+          </button>
+        </div>`;
     });
   }
   document.getElementById('price-form').innerHTML = html;
+}
+
+// Hapus Barang Jualan oleh Admin (Real-Time)
+async function deleteItem(id, name) {
+  if (!confirm(`Hapus barang "${name}" dari daftar jualan?`)) return;
+
+  try {
+    const res = await fetch(`${API_URL}?action=delete_item&id=${id}`);
+    const json = await res.json();
+    
+    if (json.status === 'success') {
+      alert('✓ Barang berhasil dihapus!');
+      await loadPrices();
+      renderPriceList();
+      openPriceManager();
+    } else {
+      alert(json.message || 'Gagal menghapus barang.');
+    }
+  } catch (e) {
+    console.error('deleteItem error', e);
+    alert('Terjadi kesalahan koneksi ke server.');
+  }
 }
 
 // Tambah Barang Jualan Baru oleh Admin (Real-Time)
